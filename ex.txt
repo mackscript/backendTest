@@ -1,0 +1,8 @@
+NODE_ENV=development
+PORT=8000
+USERNAME=taskv2mack
+url=mongodb+srv://mackscript:<db_password>@cluster.rns1p.mongodb.net/
+url=mongodb+srv://taskv2mack:<db_password>@cluster0.ztnn5.mongodb.net/
+PASSWORD=3br2m3Q10JtqPk4r
+
+ 
