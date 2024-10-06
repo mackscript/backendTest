@@ -1,59 +1,38 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
-const users = JSON.parse(fs.readFileSync(`${__dirname}/../data/user.json`));
-
-exports.checkID = (req, res, next, val) => {
-  if (req.params.id * 1 > users.length) {
-    return res.status(400).json({
-      status: { isSuccess: false, errorMessage: 'Invalid Id' },
-      data: null,
-    });
-  }
-  next();
-};
-
-exports.createUserValidation = (req, res, next) => {
-  console.log('req.body', req.body);
-  if (!req.body.name) {
-    return res.status(400).json({
-      status: { isSuccess: false, errorMessage: 'Name is Required.' },
-      data: null,
-    });
-  }
-  next();
-};
+// const users = JSON.parse(fs.readFileSync(`${__dirname}/../data/user.json`));
+const User = require('../modal/userModal');
 
 exports.getAllUsers = async (req, res) => {
-  const contacts = []; // Retrieve all contacts
-  res.status(200).json({
-    status: { isSuccess: true, errorMessage: '' },
-    result: contacts.length,
-    data: contacts,
-  });
+  try {
+    const users = await User.find();
+    res.status(200).json({
+      status: { isSuccess: true, errorMessage: '' },
+      result: users.length,
+      data: users,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: { isSuccess: false, errorMessage: err },
+      data: null,
+    });
+  }
 };
 
-exports.getUserById = (req, res) => {
-  const id = req.params.id * 1;
-  const user = users.find((el) => el.id === id);
-  res.status(200).json({
-    status: { isSuccess: true, errorMessage: '' },
-    data: user,
-  });
+exports.getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.status(200).json({
+      status: { isSuccess: true, errorMessage: '' },
+      data: user,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: { isSuccess: false, errorMessage: err.message },
+      data: null,
+    });
+  }
 };
-
-const userSchema = new mongoose.Schema({
-  userName: {
-    type: String,
-    required: [true, 'UserName is required.'],
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: [true, 'password is required.'],
-    unique: true,
-  },
-});
-const User = mongoose.model('User', userSchema);
 
 exports.CreateUser = async (req, res) => {
   try {
