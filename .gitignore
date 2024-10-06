@@ -1,4 +1,6 @@
 .env
-.congig.env
+congig.env
+ex.text
+
 .env.local
 .env.staging
