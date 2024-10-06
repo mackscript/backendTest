@@ -41,16 +41,30 @@ exports.getUserById = (req, res) => {
   });
 };
 
+const userSchema = new mongoose.Schema({
+  userName: {
+    type: String,
+    required: [true, 'UserName is required.'],
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: [true, 'password is required.'],
+    unique: true,
+  },
+});
+const User = mongoose.model('User', userSchema);
+
 exports.CreateUser = async (req, res) => {
   try {
-    const contact = {
-      name: req.body.name, // Assuming this should be 'name'
-      number: req.body.number,
-    };
-    // const savedContact = await contact.save();
+    const newUser = await User.create({
+      userName: req.body.userName,
+      password: req.body.password,
+    });
+    // const savedContact = await newUser.save();
     res.status(201).json({
       status: { isSuccess: true, errorMessage: '' },
-      data: contact,
+      data: newUser,
     });
   } catch (err) {
     res.status(400).json({

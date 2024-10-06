@@ -8,7 +8,7 @@ router.param('id', userController.checkID);
 router
   .route('/')
   .get(userController.getAllUsers)
-  .post(userController.createUserValidation, userController.CreateUser);
+  .post(userController.CreateUser);
 
 router.route('/:id').get(userController.getUserById);
 
