@@ -1,1 +1,4 @@
-git rm env.local --cached
+.env
+.congig.env
+.env.local
+.env.staging
